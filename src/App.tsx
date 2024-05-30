@@ -1,11 +1,21 @@
-import { Counter } from './components/Counter';
+import { useAppSelector } from './app/hooks';
+import { AddFormPost } from './components/AddFormPost';
+import { PostsList } from './components/PostsList';
 
 export const App = () => {
-  return (
-    <main>
-      <h1>Calculation form</h1>
+  const { posts } = useAppSelector(state => state.posts);
 
-      <Counter />
+  const preparedPosts = posts
+    .slice()
+    .sort((a, b) => b.date.localeCompare(a.date));
+
+  return (
+    <main className="flex max-w-96 flex-col gap-8">
+      <h1>Posts</h1>
+
+      <AddFormPost />
+
+      {!!posts.length && <PostsList posts={preparedPosts} />}
     </main>
   );
 };
